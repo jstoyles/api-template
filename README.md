@@ -8,7 +8,8 @@ I recently added a docs.php file that will auto-generate a detailed documenation
 
 NOTE: The auto-generate documenation page leverages the MySQL COMMENT option for stored procedures. If a properly formatted stored procedure comment is provided, the docs page will show a description of the API method and an example JSON response.
 
-In order to provide a description and example JSON response, a comment should be formatted as: 
+In order to provide a description and example JSON response, a comment should be formatted as:
+
 '< API Description > ~ < Example JSON Response >'
 
 For Example:
