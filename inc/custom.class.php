@@ -1,6 +1,6 @@
 <?php
 //Custom classes can be placed here...
-//error_reporting(0);
+error_reporting(0);
 
 class validateKeys{
 	public $message = NULL;
@@ -16,14 +16,14 @@ class validateKeys{
 	public function init() {
 		$db = getDBObject();
 
-		$result = executeStoredProc($db, 'spValidateToken', array($this->token, $this->api_key, $this->auth_code));
+		$result = executeStoredProc($db, 'ValidateToken', array($this->token, $this->api_key, $this->auth_code));
 		if ($result){
 			$this->response = $result[0]->response;
 			$this->message = $result[0]->message;
 		}
 		else{
 			$this->response = 0;
-				$this->message = 'Invalid Token';
+			$this->message = 'Invalid or Expired Token';
 		}
 		$db = NULL;
 	}
@@ -36,7 +36,7 @@ class getAPISchema{
 	public function init(){
 		$db = getDBObject();
 
-		$result = executeStoredProc($db, '__spGetAPIMethodSchema', array());
+		$result = executeStoredProc($db, '_GET_STORED_PROCEDURES', array());
 		$this->response = $result;
 		$db = NULL;
 	}
