@@ -1,14 +1,14 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-if(isset($_GET['debug']) && $_GET['debug']=='on'){ /*Don't set Content-Type*/ }
-else{ header('Content-Type: application/json'); }
-
 //sleep(2); //for testing response times
 require_once 'inc/config.php';
 require_once 'inc/functions/database.php';
 require_once 'inc/custom.class.php';
 ini_set('display_errors', 'off');
 error_reporting(0);
+
+header('Access-Control-Allow-Origin: *');
+if(DEBUG=='on'){ /*Don't set Content-Type*/ }
+else{ header('Content-Type: application/json'); }
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
 	$params = $_GET;
@@ -19,20 +19,24 @@ else if($_SERVER['REQUEST_METHOD'] == "POST"){
 $endpoint = $_GET['endpoint'];
 
 
-$apiVersion = 'v1';
+$apiVersion = VERSION;
 $apiSchema = new getAPISchema();
 $apiSchema->init();
 
 $debugData = [];
 foreach($apiSchema->response as $r){
-	array_push($debugData, array("endpoint"=>$r->methodName, "params"=>explode(',', $r->spParams), "values"=>explode(',', $r->testData) ));
+	array_push($debugData, array("endpoint"=>$r->method, "params"=>explode(',', $r->parameters) ));
 }
 
 if($endpoint=='GenerateToken' && !empty($params['key']) ){
 	$db = getDBObject();
-	$result = executeStoredProc($db, 'spGenerateToken', array($params['key']));
+	$result = executeStoredProc($db, 'GenerateToken', array($params['key']));
 	if ($result){
-		if(isset($_GET['debug']) && $params['debug']=='on'){
+		/*
+		DEBUG=='on' will generate links that allow you to easily test API calls
+					Requires a valid PUBLIC_KEY and PRIVATE_KEY to be defined in config.php
+		*/
+		if(DEBUG=='on'){
 			foreach($debugData as $d){
 				if($d['endpoint']=='GenerateToken' || $d['endpoint']=='ValidateToken'){ continue; }
 				$additional_params = '';
@@ -41,7 +45,7 @@ if($endpoint=='GenerateToken' && !empty($params['key']) ){
 						$additional_params .= '&' . $d['params'][$i] . '=' . urlencode($d['values'][$i]);
 					}
 				}
-				echo '<a href="'.BASE_URL.'/'.$apiVersion.'/'.$d['endpoint'].'/?key='.$params['key'].'&token='.$result[0]->token.'&authcode='.hash('sha512', $params['key'] . PrivateKey . $result[0]->token) . $additional_params.'" target="_blank">Call '.$d['endpoint'].'</a><br /><br />';
+				echo '<a href="'.BASE_URL.'/'.$apiVersion.'/'.$d['endpoint'].'/?key='.$params['key'].'&token='.$result[0]->token.'&authcode='.hash('sha512', PUBLIC_KEY . PRIVATE_KEY . $result[0]->token) . $additional_params.'" target="_blank">Call '.$d['endpoint'].'</a><br /><br />';
 			}
 		}
 		$response = array('result'=>true, 'token'=>$result[0]->token, 'msg'=>'success');
@@ -52,15 +56,15 @@ if($endpoint=='GenerateToken' && !empty($params['key']) ){
 	$db = NULL;
 }
 else if(!empty($endpoint) && !empty($params['key']) && !empty($params['authcode']) && !empty($params['token']) ){
-	$validate = new validateKeys($params['key'] ,$params['authcode'], $params['token']);
+	$validate = new validateKeys($params['key'], $params['authcode'], $params['token']);
 	$validate->init();
 	if($validate->response==0){ $response = array('result'=>false, 'msg'=>$validate->message); }
 	else{
 		$methodFound = false;
 		foreach($apiSchema->response as $r){
-			if($endpoint==$r->methodName){
+			if($endpoint==$r->method){
 				$methodFound = true;
-				$spParams = explode(',', $r->spParams);
+				$spParams = explode(',', $r->parameters);
 				$paramsValid = true;
 				$spParamValues = [];
 				foreach($spParams as $p){
@@ -69,9 +73,9 @@ else if(!empty($endpoint) && !empty($params['key']) && !empty($params['authcode'
 						array_push($spParamValues, $params[$p]);
 					}
 				}
-				if($paramsValid || $r->spParams==''){
+				if($paramsValid || $r->parameters==''){
 					$db = getDBObject();
-					$result = executeStoredProc($db, $r->spName, $spParamValues);
+					$result = executeStoredProc($db, $r->method, $spParamValues);
 					//foreach($results as $result){
 					if($result){
 						$response = new stdClass();
