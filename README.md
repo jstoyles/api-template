@@ -1,6 +1,6 @@
 # api-template
 
-This is a basic template for building a simple PHP REST API that leverages stored procedures and their schema to allow a MySQL database to manage all possible API endpoints. No PHP code should ever really need to be written to add or modify API endpoints. Just start creating new stored procedures they will automatically become available as endpoints for your API.
+This is a basic template for building a simple PHP REST API that leverages stored procedures and their schema to allow a MySQL database to manage all possible API endpoints. No PHP code should ever really need to be written or midified to add or modify API endpoints. Just start creating new stored procedures they will automatically become available as endpoints for your API.
 
 Security is also accounted for using Public and Private keys to generate auth tokens. So every endpoint will require an auth token to be generated before the endpoint can be reached.
 
