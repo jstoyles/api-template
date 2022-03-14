@@ -5,3 +5,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^v1/([^/]+)/$ /?endpoint=$1 [QSA,NC,L]
 RewriteRule ^v1/([^/]+)/([^/]+)/$ /?endpoint=$1&endpoint2=$2 [QSA,NC,L]
+RewriteRule ^v1/([^/]+)$ /?endpoint=$1 [QSA,NC,L]
+RewriteRule ^v1/([^/]+)/([^/]+)$ /?endpoint=$1&endpoint2=$2 [QSA,NC,L]
+
+RewriteRule ^docs$ /docs.php [QSA,NC,L]
+RewriteRule ^docs/$ /docs.php [QSA,NC,L]
