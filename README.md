@@ -13,6 +13,7 @@ In order to provide a description and example JSON response, a comment should be
 '< API Description > ~ < Example JSON Response >'
 
 For Example:
+
 COMMENT 'This method can be used to test the current status of the API ~ {"result":true,"msg":"success","data":[{"error":"0","message":"API Works"}]}'
 
 More examples of how the COMMENT option is used exist in the API_Database_Setup.sql file.
