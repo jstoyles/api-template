@@ -8,9 +8,9 @@ I recently added a docs.php file that will auto-generate a detailed documenation
 
 NOTE: The auto-generate documenation page leverages the MySQL COMMENT option for stored procedures. In order to provide a description and an example JSON response this option should be used as described here:
 
-COMMENT = '< API Description > ~ < Example JSON Response >'
+A Stored Procedure Comment shoule be formatted as... '< API Description > ~ < Example JSON Response >'
 
-Example:
+For Example:
 COMMENT 'This method can be used to test the current status of the API ~ {"result":true,"msg":"success","data":[{"error":"0","message":"API Works"}]}'
 
 More examples of how the COMMENT option is used exist in the API_Database_Setup.sql file.
