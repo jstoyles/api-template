@@ -6,6 +6,11 @@ Security is also accounted for using Public and Private keys to generate auth to
 
 I recently added a docs.php file that will auto-generate a detailed documenation page based on the stored procedures and their necessary parameters.
 
+Once the code is running on a server, the docs will become available at<br />
+*https://< API URL >/docs/*
+
+#
+
 **NOTE:** The auto-generate documenation page leverages the MySQL COMMENT option for stored procedures. If a properly formatted stored procedure comment is provided, the docs page will show a description of the API method and an example JSON response.
 
 In order to provide a description and example JSON response, a comment should be formatted as:
