@@ -22,5 +22,4 @@ define("DB_NAME", "<DB Name>");
 define("PUBLIC_KEY", "<Public API Key>");
 define("PRIVATE_KEY", "<Private API Key>");
 
-define("VERSION", "v1");
 ?>
