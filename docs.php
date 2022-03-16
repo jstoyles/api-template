@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -131,6 +131,16 @@ hr{
 	text-transform:uppercase;
 	font-size:10pt;
 }
+
+.method-link{
+	display:inline-block;
+	font-size:10pt;
+	color:#0066cc;
+	width:248px;
+	white-space:nowrap;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
 </style>
 
 </head>
@@ -162,7 +172,7 @@ $apiSchema->init();
 
 <tbody>
 	<tr>
-		<td valign="top" style="max-width:100px">
+		<td valign="top" style="width:250px">
 			<p class="instructions">Select an API method</p>
 			<?php
 			foreach($apiSchema->response as $a){
@@ -171,7 +181,7 @@ $apiSchema->init();
 				$param_types = explode(',', $a->parameter_data_types);
 				$additional_params = '';
 			?>
-			<a href="?method=<?=$a->method?>"><?=$a->method?></a>
+			<a class="method-link" href="?method=<?=$a->method?>"><?=$a->method?></a>
 			<hr style="margin:10px 0;" />
 			<?php } ?>
 		</td>
