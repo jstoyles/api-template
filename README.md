@@ -9,6 +9,8 @@ I recently added a docs.php file that will auto-generate a detailed documenation
 Once the code is running on a server, the docs will become available at<br />
 *https://< API URL >/docs/*
 
+NOTE: mod_rewrite or some version of URL rewriting must be enabled
+
 #
 
 **NOTE:** The auto-generate documenation page leverages the MySQL COMMENT option for stored procedures. If a properly formatted stored procedure comment is provided, the docs page will show a description of the API method and an example JSON response.
